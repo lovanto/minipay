@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Transaction {
+  id              String   @id @default(uuid()) @db.VarChar(36)
+  number          String   @db.VarChar(20)
+  transactionType String   @db.VarChar(50)
+  paymentNumber   String   @db.VarChar(20)
+  paymentMethod   String   @db.VarChar(50)
+  customerName    String?  @db.VarChar(100)
+  discount        Decimal  @default(0.0) @db.Decimal
+  serviceCharge   Decimal  @default(0.0) @db.Decimal
+  rounding        Decimal  @default(0.0) @db.Decimal
+  total           Decimal  @default(0.0) @db.Decimal
+  voucherId       String?  @db.VarChar(36)
+  status          String   @default("pending") @db.VarChar(20)
+  fraudStatus     String   @default("pending") @db.VarChar(20)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  Voucher    Voucher?     @relation(fields: [voucherId], references: [id])
+  LogVoucher LogVoucher[]
+}
+
+model Voucher {
+  id        String   @id @default(uuid()) @db.VarChar(36)
+  name      String   @db.VarChar(100)
+  type      String   @default("percent") @db.VarChar(20)
+  discount  Decimal  @default(0.0) @db.Decimal
+  amount    Decimal  @default(0.0) @db.Decimal
+  maxAmount Decimal  @default(0.0) @db.Decimal
+  expiredAt DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  transactions Transaction[]
+  logVouchers  LogVoucher[]
+}
+
+model LogVoucher {
+  id            String   @id @default(uuid()) @db.VarChar(36)
+  transactionId String   @db.VarChar(36)
+  voucherId     String   @db.VarChar(36)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  voucher     Voucher?     @relation(fields: [voucherId], references: [id], onDelete: Cascade)
+  transaction Transaction? @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+}
