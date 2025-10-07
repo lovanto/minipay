@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'moeda',
+      name: 'minipay',
       script: 'dist/index.js',
       // restart behavior
       autorestart: true,
@@ -9,8 +9,8 @@ module.exports = {
       max_restarts: 5,
 
       // logging
-      error_file: './logs/moeda-error.log',
-      out_file: './logs/moeda-out.log',
+      error_file: './logs/minipay-error.log',
+      out_file: './logs/minipay-out.log',
       merge_logs: true,
       time: true,
 
@@ -23,7 +23,7 @@ module.exports = {
       // env
       env: {
         NODE_ENV: 'production',
-        PORT: 3000,
+        PORT: 3002,
       },
     },
   ],
