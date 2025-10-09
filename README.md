@@ -1,6 +1,6 @@
-# Backend Mono Services API
+# Backend Miniature Pay API
 
-A Node.js TypeScript REST API service for managing restaurant with industry-standard practices.
+A production-ready Node.js + TypeScript RESTful API designed to handle QRIS-based payments via Midtrans. Built with modular design, and industry-standard best practices — including structured logging, environment-based configuration, secure authentication, and CI/CD readiness.
 
 ## Features
 
